@@ -8,11 +8,11 @@ Sistem penjadwalan mata kuliah menggunakan Flask, Neo4j, dan algoritma Graph Col
 - **Admin**: Mengelola semua user, mata kuliah, dan penjadwalan
 - **Dosen**: Melihat mata kuliah yang diajar
 - **Mahasiswa**: Mendaftar mata kuliah dan melihat jadwal
-
+  
 ### Graph Coloring untuk Penjadwalan
-- **Greedy Algorithm**: Algoritma cepat untuk pewarnaan graf
-- **DSatur Algorithm**: Algoritma yang lebih optimal berdasarkan saturation degree
-- **Conflict Detection**: Deteksi otomatis konflik berdasarkan mahasiswa yang mengambil mata kuliah yang sama
+- **Greedy Algorithm**: Algoritma pewarnaan graf yang cepat dan sederhana. Cocok sebagai baseline, namun hasilnya sangat bergantung pada urutan simpul yang diproses.
+- **Welsh-Powell Algorithm**: Algoritma pewarnaan graf heuristik yang mengurutkan simpul berdasarkan derajat tertinggi terlebih dahulu, sehingga lebih optimal dalam meminimalkan jumlah warna (slot waktu).
+- **Conflict Detection**: Sistem secara otomatis mendeteksi konflik antar mata kuliah berdasarkan mahasiswa yang mengambil keduanya, kemudian membentuk edge antar mata kuliah di dalam graf.
 
 ### Fitur Utama
 - Dashboard berbeda untuk setiap role
