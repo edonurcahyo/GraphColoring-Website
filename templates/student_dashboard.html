@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-user-graduate"></i> Student Dashboard</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-book"></i> My Enrolled Courses</h5>
+            </div>
+            <div class="card-body">
+                {% if courses %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Course ID</th>
+                                <th>Course Name</th>
+                                <th>Credits</th>
+                                <th>Schedule</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for course in courses %}
+                            <tr>
+                                <td>{{ course.course_id }}</td>
+                                <td>{{ course.name }}</td>
+                                <td>{{ course.credits }}</td>
+                                <td>
+                                    {% if course.schedule_time %}
+                                        <span class="badge bg-success">{{ course.schedule_time }}</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">Not scheduled</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> You are not enrolled in any courses yet.
+                    <a href="{{ url_for('manage_enrollments') }}" class="alert-link">Click here to enroll in courses.</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-plus"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <a href="{{ url_for('manage_enrollments') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Enroll in Courses
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

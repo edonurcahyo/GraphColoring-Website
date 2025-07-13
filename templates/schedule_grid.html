@@ -1,0 +1,28 @@
+<div class="schedule-grid">
+    {% for time_slot, courses in schedule.items() %}
+    <div class="time-slot card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5><i class="fas fa-clock"></i> {{ time_slot }}</h5>
+        </div>
+        <div class="card-body">
+            {% for course in courses %}
+            <div class="course-item mb-2 p-2 bg-info text-white rounded">
+                <strong>{{ course.course_id }}</strong> - {{ course.name }}
+            </div>
+            {% else %}
+            <div class="text-muted">
+                <i class="fas fa-calendar-times"></i> No courses scheduled
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-warning text-center">
+            <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+            <h5>No Schedule Generated</h5>
+            <p>Click "Generate Schedule" to create a course schedule.</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">Total Users</h5>
+                        <h3>{{ stats.total_users }}</h3>
+                    </div>
+                    <i class="fas fa-users fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">Total Courses</h5>
+                        <h3>{{ stats.total_courses }}</h3>
+                    </div>
+                    <i class="fas fa-book fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">Total Enrollments</h5>
+                        <h3>{{ stats.total_enrollments }}</h3>
+                    </div>
+                    <i class="fas fa-user-graduate fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">Quick Actions</h5>
+                        <p class="card-text">Manage System</p>
+                    </div>
+                    <i class="fas fa-cog fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-bar"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('manage_users') }}" class="btn btn-outline-primary btn-lg w-100">
+                            <i class="fas fa-users"></i><br>
+                            Manage Users
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('manage_courses') }}" class="btn btn-outline-success btn-lg w-100">
+                            <i class="fas fa-book"></i><br>
+                            Manage Courses
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('view_schedule') }}" class="btn btn-outline-warning btn-lg w-100">
+                            <i class="fas fa-calendar-alt"></i><br>
+                            Generate Schedule
+                        </a>
+                    </div>
+                    <!-- <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <i class="fas fa-chart-network"></i> Graph Tools
+                        </div> -->
+                        <!-- <div class="card-body text-center">
+                            <a href="{{ url_for('show_graph') }}" class="btn btn-lg btn-outline-primary">
+                                <i class="fas fa-project-diagram fa-2x mb-3"></i><br>
+                                Open Graph Visualization
+                            </a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

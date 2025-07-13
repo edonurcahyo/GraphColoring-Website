@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Header & Actions -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-calendar-alt"></i> Jadwal Mata Kuliah</h2>
+        <div>
+            <!-- Tombol Generate -->
+            <button type="button" class="btn btn-info me-2" data-bs-toggle="modal" data-bs-target="#algorithmModal">
+                <i class="fas fa-cogs"></i> Generate Jadwal
+            </button>
+            <!-- Tombol Clear -->
+            <form method="POST" action="{{ url_for('clear_schedule') }}" class="d-inline">
+                <button type="submit" class="btn btn-warning"
+                        onclick="return confirm('Apakah Anda yakin ingin menghapus semua jadwal saat ini?')">
+                    <i class="fas fa-trash-alt"></i> Hapus Jadwal
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Jadwal Terjadwal -->
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <h4 class="mb-3"><i class="fas fa-clock"></i> Jadwal Saat Ini</h4>
+            <div class="schedule-grid">
+                {% for time_slot, courses in schedule.items() %}
+                <div class="time-slot">
+                    <h6><i class="far fa-clock"></i> {{ time_slot }}</h6>
+                    {% if courses %}
+                        {% for course in courses %}
+                        <div class="course-item border p-2 mb-2 rounded bg-light text-dark">
+                            <strong>{{ course.course_id }}</strong><br>
+                            {{ course.name }}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="text-muted">
+                        <i class="fas fa-calendar-times"></i> Tidak ada mata kuliah
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Konflik Jadwal -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Konflik Penjadwalan</h4>
+                </div>
+                <div class="card-body">
+                    {% if conflicts %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Slot Waktu</th>
+                                    <th>Mata Kuliah 1</th>
+                                    <th>Mata Kuliah 2</th>
+                                    <th>Jumlah Mahasiswa Terdampak</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for conflict in conflicts %}
+                                <tr>
+                                    <td>{{ time_slots.get(conflict.slot, "Slot " ~ conflict.slot) }}</td>
+                                    <td>{{ conflict.course1_id }} - {{ conflict.course1_name }}</td>
+                                    <td>{{ conflict.course2_id }} - {{ conflict.course2_name }}</td>
+                                    <td class="text-danger fw-bold">{{ conflict.student_count }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i> Tidak ditemukan konflik penjadwalan.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Algoritma -->
+<div class="modal fade" id="algorithmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('generate_schedule') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-cogs"></i> Pilih Algoritma Penjadwalan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Gunakan algoritma berikut untuk menjadwalkan mata kuliah berdasarkan konflik mahasiswa:</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="algorithm" id="greedy" value="greedy" checked>
+                        <label class="form-check-label" for="greedy">
+                            <strong>Greedy Algorithm</strong> – Cepat dan sederhana
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="algorithm" id="dsatur" value="dsatur">
+                        <label class="form-check-label" for="dsatur">
+                            <strong>DSatur Algorithm</strong> – Lebih optimal pada graf padat
+                        </label>
+                    </div>
+                    <hr>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> Algoritma akan membuat graf konflik dari data mahasiswa dan menentukan slot waktu agar tidak bentrok.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-play"></i> Jalankan Algoritma
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Debugging untuk developer: tampilkan konflik di console
+function loadConflicts() {
+    fetch('/api/schedule/conflicts')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Conflicts:', data);
+        });
+}
+document.addEventListener('DOMContentLoaded', loadConflicts);
+</script>
+{% endblock %}
